@@ -1,10 +1,10 @@
-package br.com.fastflix.project;
+package br.com.cadastro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JavaFastFlixApplicationTests {
+class CadastroApplicationTests {
 
 	@Test
 	void contextLoads() {
