@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up</title>
+    <style>
+        button {
+            margin-bottom: 6px;
+            ;
+        }
+        
+        body {
+            margin: 8px 8px 8px 8px;
+        }
+        
+        ul {
+            list-style-type: none;
+        }
+    </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js">
+    </script>
+
+    <script>
+        const URLAPP = 'http://localhost:9007';
+        let resultado = "";
+
+        function helloGet() {
+
+            // Make a request for a user with a given ID
+            axios.get(URLAPP + '/funciona')
+
+            .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    if (response.status == 200) {
+                        resultado = response.data;
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                })
+                .then(function() {
+                    // always executed
+                    console.log(resultado);
+                    document.getElementById("res").innerText = resultado;
+                });
+
+        }
+
+        function inserirFicha() {
+
+            // Make a request for a user with a given ID
+            let ficha = {};
+
+            ficha.cpf = parseInt(document.getElementById("cpf").value);
+            ficha.nome = document.getElementById("nome").value;
+            ficha.email = document.getElementById("email").value;
+            ficha.cep = document.getElementById("cep").value;
+            ficha.celular = document.getElementById("celular").value;
+            ficha.pais = document.getElementById("pais").value;
+            ficha.cidade = document.getElementById("cidade").value;
+            ficha.senha = document.getElementById("senha").value;
+            ficha.dtcadastro = document.getElementById("dtcadastro").value;
+            ficha.logradouro = document.getElementById("logradouro").value;
+            ficha.ncasa = document.getElementById("ncasa").value;
+
+            console.log(ficha);
+            axios.post(URLAPP + '/fichas', ficha)
+                .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    if (response.status == 201) {
+                        document.getElementById("res").innerText = "Ficha " + ficha.nome + " inserida com sucesso";
+                        limpar();
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        if (error.response.status == 409) {
+                            document.getElementById("res").innerText = "Ficha " + ficha.cpf + " em duplicidade";
+
+                        }
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
+        }
+
+        function buscarFicha() {
+            let ficha = {};
+            let customerID = document.getElementById("customerID").value;
+
+            axios.get(URLAPP + '/fichas/' + customerID)
+                .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    if (response.status == 200) {
+                        ficha = response.data;
+                        document.getElementById("cpf").value = ficha.cpf;
+                        document.getElementById("nome").value = ficha.nome;
+                        document.getElementById("email").value = ficha.email;
+                        document.getElementById("cep").value = ficha.cep;
+                        document.getElementById("celular").value = ficha.celular;
+                        document.getElementById("pais").value = ficha.pais;
+                        document.getElementById("cidade").value = ficha.cidade;
+                        document.getElementById("senha").value = ficha.senha;
+                        document.getElementById("dtcadastro").value = ficha.dtcadastro
+                        document.getElementById("logradouro").value = ficha.logradouro
+                        document.getElementById("ncasa").value = ficha.ncasa
+                        document.getElementById("customerID").value = ficha.customerID
+                        document.getElementById("res").innerText = "OK";
+                    } else
+                    if (response.status == 204) {
+                        document.getElementById("res").innerText = "Ficha " + customerID + " não existe";
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        if (error.response.status == 409) {
+                            resultado = "Ficha em duplicidade";
+                        }
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
+
+        }
+
+        function eliminarFicha() {
+            let ficha = {};
+            let customerID = document.getElementById("customerID").value;
+
+            axios.delete(URLAPP + '/fichas/' + customerID)
+                .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    if (response.status == 200) {
+                        aluno = response.data;
+                        document.getElementById("res").innerText = "Ficha " + customerID + " eliminada";
+                    } else
+                    if (response.status == 204) {
+                        document.getElementById("res").innerText = "Ficha " + customerID + " não existe";
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        if (error.response.status == 409) {
+                            resultado = "Ficha em duplicidade";
+                        }
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
+
+        }
+
+        function alterarFicha() {
+            let ficha = {};
+            let customerID = document.getElementById("customerID").value;
+            ficha.cpf = document.getElementById("cpf").value;
+            ficha.nome = document.getElementById("nome").value;
+            ficha.email = document.getElementById("email").value;
+            ficha.cep = document.getElementById("cep").value
+            ficha.celular = document.getElementById("celular").value
+            ficha.pais = document.getElementById("pais").value
+            ficha.cidade = document.getElementById("cidade").value
+            ficha.senha = document.getElementById("senha").value
+            ficha.dtcadastro = document.getElementById("dtcadastro").value
+            ficha.logradouro = document.getElementById("logradouro").value
+            ficha.ncasa = document.getElementById("ncasa").value
+
+            console.log(ficha);
+            axios.put(URLAPP + '/fichas/' + customerID, ficha)
+                .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    if (response.status == 200) {
+                        document.getElementById("res").innerText = "Ficha " + customerID + " alterado com sucesso";
+                        limpar();
+                    } else
+                    if (response.status == 204) {
+                        document.getElementById("res").innerText = "Ficha " + customerID + " não existe";
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
+        }
+
+        function relatorio() {
+            let fichas = [];
+
+            axios.get(URLAPP + '/fichas')
+                .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    if (response.status == 200) {
+                        fichas = response.data;
+                        let relHTML = "<ul>";
+                        for (i = 0; i < fichas.length; i++) {
+                            relHTML += "<li>CustomerID: " + fichas[i].customerID + "</li>";
+                            relHTML += "<li>CPF: " + fichas[i].cpf + "</li>";
+                            relHTML += "<li>nome: " + fichas[i].nome + "</li>";
+                            relHTML += "<li>email: " + fichas[i].email + "</li>";
+                            relHTML += "<li>cep: " + fichas[i].cep + "</li>";
+                            relHTML += "<li>Celular: " + fichas[i].celular + "</li>";
+                            relHTML += "<li>Pais: " + fichas[i].pais + "</li>";
+                            relHTML += "<li>cidade: " + fichas[i].cidade + "</li>";
+                            relHTML += "<li>senha: " + fichas[i].senha + "</li>";
+                            relHTML += "<li>logradouro: " + fichas[i].logradouro + "</li>";
+                            relHTML += "<li>Numero da Casa: " + fichas[i].ncasa + "</li>";
+                            relHTML += "<li>Data de cadastro: " + fichas[i].dtcadastro + "</li>";
+                            relHTML += "<hr>";
+                        }
+                        relHTML += "</ul>";
+                        document.getElementById("res").innerHTML = relHTML;
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        if (error.response.status == 409) {
+                            resultado = "Aluno em duplicidade";
+                        }
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
+
+        }
+
+        function limpar() {
+            document.getElementById("cpf").value = "";
+            document.getElementById("nome").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("cep").value = "";
+            document.getElementById("celular").value = "";
+            document.getElementById("pais").value = "";
+            document.getElementById("cidade").value = "";
+            document.getElementById("senha").value = "";
+            document.getElementById("logradouro").value = "";
+            document.getElementById("dtcadastro").value = "";
+            document.getElementById("ncasa").value = "";
+            document.getElementById("customerID").value = "";
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Cadastro - FastFlix</h1>
+    <br>
+    <button type="button" onclick="helloGet()">Dizer se funciona</button>
+    <button style="margin-left: 20px;" type="button" onclick="relatorio()">Listagem de Cadastros</button>
+    <br>
+    <hr /> CustomerID <br> <input type="text" id="customerID" /><br> Nome <br> <input type="text" id="nome" /><br> Email <br> <input type="text" id="email" /><br> CEP <br> <input type="text" id="cep" /><br> CELULAR <br> <input type="text" id="celular" /><br>    PAIS <br> <input type="text" id="pais" /><br> CIDADE <br> <input type="text" id="cidade" /><br> SENHA <br> <input type="text" id="senha" /><br> logradouro <br> <input type="text" id="logradouro" /><br> Numero da casa <br> <input type="text" id="ncasa"
+    /><br>Data do cadastro <br> <input type="text" id="dtcadastro" /><br>CPF <br> <input type="text" id="cpf"><br>
+    <p></p>
+    <button type="button" onclick="inserirFicha()">Novo Cadastro</button>
+
+    <button style="margin-left: 20px;" type="button" onclick="buscarFicha()">Buscar Ficha</button>
+
+    <button style="margin-left: 20px;" type="button" onclick="eliminarFicha()">Eliminar Ficha</button>
+
+    <button style="margin-left: 20px;" type="button" onclick="alterarFicha()">Alterar Ficha</button>
+
+    <button style="margin-left: 20px;" type="button" onclick="limpar()">Limpar</button>
+    <div id="res">
+    </div>
+
+
+</body>
+
+</html>
