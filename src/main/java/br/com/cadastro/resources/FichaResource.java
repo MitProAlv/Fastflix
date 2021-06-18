@@ -40,7 +40,7 @@ public class FichaResource {
 		@ResponseBody
 		@RequestMapping(value = "/fichas", method = RequestMethod.POST)
 		public ResponseEntity<?> novaFicha(@RequestBody Ficha ficha) {
-			Optional<Ficha> optFicha = fichaRepository.findById(ficha.getCustomerID());
+			Optional<Ficha> optFicha = fichaRepository.findById(ficha.getCpf());
 			if (optFicha.isPresent())
 				return ResponseEntity.status(HttpStatus.CONFLICT).body("");
 			fichaRepository.save(ficha);
@@ -75,7 +75,7 @@ public class FichaResource {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
 
 			Ficha fichaCorrente = optFicha.get();
-			if (fichaNova.getCpf() != null && fichaNova.getCpf().length() > 0) {
+			if (fichaNova.getCpf() != null && fichaNova.getCpf().intValue() > 0) {
 				fichaCorrente.setCpf(fichaNova.getCpf());
 			}
 		
@@ -110,6 +110,9 @@ public class FichaResource {
 			
 			if (fichaNova.getDtcadastro() != null && fichaNova.getDtcadastro().length() > 0) {
 				fichaCorrente.setDtcadastro(fichaNova.getDtcadastro());
+			}
+			if (fichaNova.getDtnascimento() != null && fichaNova.getDtnascimento().length() > 0) {
+				fichaCorrente.setDtnascimento(fichaNova.getDtnascimento());
 			}
 			
 			fichaRepository.save(fichaCorrente);

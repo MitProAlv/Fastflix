@@ -22,7 +22,7 @@ public class Ficha {
 		    //rest of constructor
 		}
 		
-		private String cpf;
+		private Integer cpf;
 		private String celular;
 		private String cep;
 
@@ -34,12 +34,13 @@ public class Ficha {
 		private String logradouro;
 		private String ncasa;
 		private String dtcadastro;
+		private String dtnascimento;
 	
 		
-		public String getCpf() {
+		public Integer getCpf() {
 			return cpf;
 		}
-		public void setCpf(String cpf) {
+		public void setCpf(Integer cpf) {
 			this.cpf = cpf;
 		}
 		public String getCelular() {
@@ -108,6 +109,12 @@ public class Ficha {
 		}
 		public void setCustomerID(int customerID) {
 			this.customerID = customerID;
+		}
+		public String getDtnascimento() {
+			return dtnascimento;
+		}
+		public void setDtnascimento(String dtnascimento) {
+			this.dtnascimento = dtnascimento;
 		}
 }
 
