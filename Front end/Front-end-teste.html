@@ -87,7 +87,7 @@
                     // handle success
                     console.log(response);
                     if (response.status == 201) {
-                        document.getElementById("res").innerText = "Ficha " + ficha.nome + " inserida com sucesso";
+                        document.getElementById("res").innerText = "Ficha " + ficha.nome + " criada";
                         limpar();
                     }
                 })
@@ -98,7 +98,7 @@
                         // that falls out of the range of 2xx
                         console.log(error.response.data);
                         console.log(error.response.status);
-                        if (error.response.status == 409) {
+                        if (error.response.status == 500) {
                             document.getElementById("res").innerText = "Ficha " + ficha.cpf + " em duplicidade";
 
                         }
@@ -235,10 +235,11 @@
                 .catch(function(error) {
                     // handle error
                     if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
                         console.log(error.response.data);
                         console.log(error.response.status);
+                        if (error.response.status == 500) {
+                            document.getElementById("res").innerText = "Ficha " + ficha.cpf + " em duplicidade";
+                        }
                     } else if (error.request) {
                         // The request was made but no response was received
                         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

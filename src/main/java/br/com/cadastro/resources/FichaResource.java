@@ -41,14 +41,15 @@ public class FichaResource {
 		@RequestMapping(value = "/fichas", method = RequestMethod.POST)
 		public ResponseEntity<?> novaFicha(@RequestBody Ficha ficha) {
 			Optional<Ficha> optFicha = fichaRepository.findById(ficha.getCpf());
-			if (optFicha.isPresent())
-				return ResponseEntity.status(HttpStatus.CONFLICT).body("");
+			if (optFicha.isPresent()) 
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(""); 
+			
 			fichaRepository.save(ficha);
 			return ResponseEntity.status(HttpStatus.CREATED).body(ficha);
 		}
 
 		@RequestMapping(value = "/fichas/{customerID}", method = RequestMethod.GET)
-		public ResponseEntity<?> obterFichaID(@PathVariable Integer customerID) {
+		public ResponseEntity<?> obterFichaID(@PathVariable Long customerID) {
 			Optional<Ficha> optFicha = fichaRepository.findById(customerID);
 			if (optFicha.isPresent()) {
 				return ResponseEntity.status(HttpStatus.OK).body(optFicha.get());
@@ -57,7 +58,7 @@ public class FichaResource {
 		}
 
 		@RequestMapping(value = "/fichas/{customerID}", method = RequestMethod.DELETE)
-		public ResponseEntity<?> eliminarFichasID(@PathVariable Integer customerID) {
+		public ResponseEntity<?> eliminarFichasID(@PathVariable Long customerID) {
 			Optional<Ficha> optFicha = fichaRepository.findById(customerID);
 			if (!optFicha.isPresent()) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -69,8 +70,8 @@ public class FichaResource {
 		
 		@ResponseBody
 		@RequestMapping(value = "/fichas/{customerID}", method = RequestMethod.PUT)
-		public ResponseEntity<?> alterarFicha(@PathVariable Integer customerID, @RequestBody Ficha fichaNova) {
-			Optional<Ficha> optFicha = fichaRepository.findById(customerID);
+		public ResponseEntity<?> alterarFicha(@PathVariable Long cpf, @RequestBody Ficha fichaNova, @RequestBody Ficha ficha) {
+			Optional<Ficha> optFicha = fichaRepository.findById(cpf);
 			if (!optFicha.isPresent())
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
 

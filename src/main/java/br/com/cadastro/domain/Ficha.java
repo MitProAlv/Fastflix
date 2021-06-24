@@ -1,7 +1,9 @@
 package br.com.cadastro.domain;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
+import java.util.concurrent.atomic.AtomicLong;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,17 +14,17 @@ public class Ficha {
 		
 		@Id
 		@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-	private int customerID;
+		private Long customerID;
 		
-		private static AtomicInteger ID_GENERATOR = new AtomicInteger(1000);
+		private static AtomicLong ID_GENERATOR = new AtomicLong(2000);
 		
 		public void customerID (String fN, String sn, String g, String a) { 
 			
-			customerID = ID_GENERATOR.getAndIncrement();
+			customerID = (long) ID_GENERATOR.getAndIncrement();
 		    //rest of constructor
 		}
-		
-		private Integer cpf;
+		@Column(unique = true)
+		private Long cpf;
 		private String celular;
 		private String cep;
 
@@ -37,10 +39,10 @@ public class Ficha {
 		private String dtnascimento;
 	
 		
-		public Integer getCpf() {
+		public Long getCpf() {
 			return cpf;
 		}
-		public void setCpf(Integer cpf) {
+		public void setCpf(Long cpf) {
 			this.cpf = cpf;
 		}
 		public String getCelular() {
@@ -104,17 +106,19 @@ public class Ficha {
 		public void setDtcadastro(String dtcadastro) {
 			this.dtcadastro = dtcadastro;
 		}
-		public int getCustomerID() {
-			return customerID;
-		}
-		public void setCustomerID(int customerID) {
-			this.customerID = customerID;
-		}
+
+		
 		public String getDtnascimento() {
 			return dtnascimento;
 		}
 		public void setDtnascimento(String dtnascimento) {
 			this.dtnascimento = dtnascimento;
+		}
+		public Long getCustomerID() {
+			return customerID;
+		}
+		public void setCustomerID(Long customerID) {
+			this.customerID = customerID;
 		}
 }
 
