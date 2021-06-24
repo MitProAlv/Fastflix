@@ -19,12 +19,8 @@ import br.com.cadastro.domain.Ficha;
 import br.com.cadastro.repository.FichaRepository;
 
 
-
-
-
-
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FichaResource {
 
 	
