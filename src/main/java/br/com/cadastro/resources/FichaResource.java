@@ -83,8 +83,8 @@ public class FichaResource {
 
 		
 		@ResponseBody
-		@RequestMapping(value = "/fichas/{customerID}", method = RequestMethod.PUT)
-		public ResponseEntity<?> alterarFicha(@PathVariable Long cpf, @RequestBody Ficha fichaNova, @RequestBody Ficha ficha) {
+		@RequestMapping(value = "/fichas/{cpf}", method = RequestMethod.PUT)
+		public ResponseEntity<?> alterarFicha(@PathVariable Long cpf, @RequestBody Ficha fichaNova) {
 			Optional<Ficha> optFicha = fichaRepository.findById(cpf);
 			if (!optFicha.isPresent())
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
